@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCM Secure Access | VCM Sickbay Intel</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/offline-icons.js"></script>
+    <style>
+        .falling-medical-assets {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .medical-asset {
+            position: absolute;
+            color: var(--primary);
+            opacity: 0.2;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.2;
+            }
+
+            90% {
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg-liquid);
+            position: relative;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 480px;
+            padding: 4rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            padding-right: 3.5rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.9rem;
+            top: 50%;
+            transform: translateY(-10%);
+            width: 2rem;
+            height: 2rem;
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: var(--transition-premium);
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.08);
+        }
+
+        .password-toggle:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .login-logo {
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px var(--primary-glow));
+            }
+
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 40px var(--primary-glow));
+            }
+        }
+    </style>
+</head>
+
+<body class="clinical-theme">
+    <div class="theme-toggle-fixed" id="theme-toggle" style="position: fixed; top: 2rem; right: 2rem; z-index: 1000; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 16px; background: rgba(255, 255, 255, 0.4); border: 1px solid var(--glass-border); color: var(--text-muted); transition: var(--transition-premium); backdrop-filter: blur(10px);">
+        <i data-lucide="moon" id="theme-icon-moon"></i>
+        <i data-lucide="sun" id="theme-icon-sun" style="display: none;"></i>
+    </div>
+
+    <div class="falling-medical-assets" id="falling-container"></div>
+
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="login-page">
+        <div class="login-card glass sheen">
+            <div class="login-logo lcd-panel">
+                    <div class="clinical-logo" style="margin: 0 auto; width: auto; height: auto; background: transparent; border: none; box-shadow: none; text-align:center;">
+                    <img src="vcm-logo.png" alt="VCM Logo" class="logo-img" style="height:130px; width: auto; pointer-events:none; display:block; margin:0 auto;">
+                </div>
+            </div>
+
+            <form id="login-form" class="premium-form">
+                <div class="form-group-floating">
+                    <input type="text" id="nurse-id" required placeholder=" ">
+                    <label for="nurse-id">Clinical Identity ID</label>
+                    <i data-lucide="user" class="input-icon"></i>
+                </div>
+
+                <div class="form-group-floating password-field" style="margin-bottom: 2.5rem;">
+                    <input type="password" id="nurse-pass" required placeholder=" ">
+                    <label for="nurse-pass">Security Access Key</label>
+                    <i data-lucide="key-round" class="input-icon"></i>
+                    <button type="button" id="toggle-password" class="password-toggle" aria-label="Show password" aria-pressed="false" title="Show password">
+                        <i data-lucide="eye" id="password-toggle-icon"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="btn-primary w-full interactive" style="height: 65px; font-size: 1.1rem;">
+                    <span>AUTHORIZE SESSION</span>
+                    <i data-lucide="shield-check" style="margin-left: 10px;"></i>
+                </button>
+
+                <button type="button" class="btn-secondary w-full interactive"
+                    style="margin-top: 1rem; height: 50px; font-size: 0.9rem; background: rgba(0,0,0,0.05); color: var(--text-main); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; font-weight: 700; cursor: pointer;"
+                    onclick="window.location.href='admin.html'">
+                    <i data-lucide="settings" style="margin-right: 8px; width: 16px; vertical-align: middle;"></i>
+                    SYSTEM ADMINISTRATION
+                </button>
+
+                <p id="error-msg"
+                    style="color:var(--danger); margin-top: 1.5rem; display:none; font-weight:700; font-size:0.9rem;">
+                    <i data-lucide="alert-octagon" size="16"></i> INVALID AUTHORIZATION CREDENTIALS
+                </p>
+            </form>
+
+            
+        </div>
+    <!-- AI Assistant Tab + Panel (global) -->
+    <div id="ai-assistant-tab" role="button" aria-label="Open AI Assistant" title="AI Assistant" style="position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:10001; width:48px; height:260px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg, var(--primary), var(--secondary)); border-radius:18px 0 0 18px; box-shadow:0 18px 38px rgba(0,0,0,0.22); cursor:pointer;">
+        <i data-lucide="message-square" style="color:var(--white); width:22px; height:22px;"></i>
+    </div>
+
+    <div id="ai-assistant-panel" class="glass sheen" aria-hidden="true" style="position:fixed; right:0; top:0; height:100vh; width:315px; max-width:71vw; z-index:10002; padding:1rem; box-shadow: -30px 0 60px rgba(0,0,0,0.25); transform: translateX(110%); transition: transform 260ms ease;">
+        <div style="display:flex; flex-direction:column; height:100%; gap:0.75rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                <div>
+                    <h3 style="margin:0;">AI Medical Assistant</h3>
+                    <p style="margin:0; color:var(--text-muted); font-size:0.85rem;">Offline answers use local data; paste OpenAI API key for web access.</p>
+                </div>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                    <input id="ai-api-key" placeholder="OpenAI API key (optional)" style="padding:8px 10px; border-radius:8px; border:1px solid var(--glass-border); width:240px;">
+                    <button class="btn-icon" id="ai-save-key-btn">Save</button>
+                    <button class="btn-icon" id="close-ai-assistant-btn" aria-label="Close AI assistant" title="Close AI assistant"><i data-lucide="x"></i></button>
+                </div>
+            </div>
+
+            <div id="ai-assistant-body" style="display:flex; flex-direction:column; gap:0.75rem; flex:1;">
+                <div id="ai-messages" style="flex:1; max-height:calc(100% - 120px); overflow:auto; padding:0.75rem; background:rgba(0,0,0,0.03); border-radius:12px;"></div>
+
+                <div style="display:flex; gap:0.5rem; align-items:center; margin-top:0.5rem;">
+                    <input id="ai-query" placeholder="Ask about a drug, dosage, side effects, or inventory." style="flex:1; padding:12px 14px; border-radius:12px; border:1px solid var(--glass-border);">
+                    <button id="ai-send-btn" class="btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+
+    <script>
+        const container = document.getElementById('falling-container');
+        const icons = ['pill', 'heart', 'plus-circle', 'activity', 'thermometer', 'syringe'];
+
+        function createAsset() {
+            if (!container) return;
+            const asset = document.createElement('div');
+            asset.className = 'medical-asset';
+            const iconName = icons[Math.floor(Math.random() * icons.length)];
+
+            // Create the icon element
+            const iconEl = document.createElement('i');
+            iconEl.setAttribute('data-lucide', iconName);
+            asset.appendChild(iconEl);
+
+            const startX = Math.random() * window.innerWidth;
+            const size = 15 + Math.random() * 35;
+            const duration = 10 + Math.random() * 20;
+
+            asset.style.left = startX + 'px';
+            asset.style.fontSize = size + 'px';
+            asset.style.animationDuration = duration + 's';
+
+            container.appendChild(asset);
+
+            if (window.lucide) lucide.createIcons();
+
+            setTimeout(() => {
+                if (asset.parentNode) asset.remove();
+            }, duration * 1000);
+        }
+
+        // Optimized flow
+        for (let i = 0; i < 12; i++) setTimeout(createAsset, i * 400);
+        setInterval(() => {
+            if (document.visibilityState === 'visible') createAsset();
+        }, 1800);
+
+        // Ensure button works
+        const form = document.getElementById('login-form');
+        if (form) {
+            form.addEventListener('submit', () => {
+                const btn = form.querySelector('button');
+                btn.style.opacity = '0.7';
+                btn.querySelector('span').textContent = 'AUTHORIZING...';
+            });
+        }
+
+        const passwordInput = document.getElementById('nurse-pass');
+        const togglePasswordBtn = document.getElementById('toggle-password');
+
+        if (passwordInput && togglePasswordBtn) {
+            togglePasswordBtn.addEventListener('click', () => {
+                const isHidden = passwordInput.type === 'password';
+                passwordInput.type = isHidden ? 'text' : 'password';
+                togglePasswordBtn.setAttribute('aria-pressed', String(isHidden));
+                togglePasswordBtn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+                togglePasswordBtn.title = isHidden ? 'Hide password' : 'Show password';
+
+                const icon = document.getElementById('password-toggle-icon');
+                if (icon) icon.setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+                if (window.lucide) lucide.createIcons();
+            });
+        }
+    </script>
+</body>
+
+</html>
+
+

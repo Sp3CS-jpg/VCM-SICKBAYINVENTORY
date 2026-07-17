@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCM Administrative Console | VCM Sickbay Intel</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/offline-icons.js"></script>
+    <style>
+        .admin-portal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg-liquid);
+        }
+
+        .admin-login-card {
+            width: 100%;
+            max-width: 450px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .admin-dashboard {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 1rem;
+        }
+
+        .admin-tab {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition-premium);
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .admin-panel {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
+        }
+
+        .admin-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .admin-table td {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .admin-table tr td:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .admin-table tr td:last-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        .access-denied {
+            color: var(--danger);
+            font-weight: 700;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="clinical-theme">
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Admin Access Portal -->
+    <div id="admin-access-portal" class="admin-portal">
+        <div class="admin-login-card glass sheen">
+            <div class="clinical-logo" style="margin: 0 auto 2rem;">
+                <i data-lucide="shield-alert"></i>
+            </div>
+            <h1 style="font-family:'Outfit'; margin-bottom:0.5rem;">System Override</h1>
+            <p style="color:var(--text-muted); margin-bottom:2rem;">Restricted Administration Protocol 2026</p>
+
+            <form id="admin-login-form" class="premium-form">
+                <div class="form-group">
+                    <label>Master Identity</label>
+                    <input type="text" id="admin-username" required placeholder="Enter Master Key ID">
+                </div>
+                <div class="form-group">
+                    <label>Security Override Phrase</label>
+                    <input type="password" id="admin-password" required placeholder="••••••••••••">
+                </div>
+                <button type="submit" class="btn-primary w-full">AUTHORIZE OVERRIDE</button>
+                <p id="admin-error" class="access-denied text-sm mt-4">INVALID OVERRIDE CREDENTIALS</p>
+            </form>
+            <div style="margin-top: 2rem;">
+                <a href="index.html" style="color:var(--primary); text-decoration:none; font-size:0.9rem;">Return to
+                    Clinical Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Management Interface -->
+    <div id="admin-interface" class="admin-dashboard">
+        <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3rem;">
+            <div style="display:flex; align-items:center; gap:2rem;">
+                <div class="clinical-logo lcd-panel" style="width: auto; height: auto; background: transparent; border: none; box-shadow: none; text-align:center;">
+                    <img src="vcm-logo.png" alt="VCM Logo" class="logo-img" style="height: 91px; width: auto; pointer-events:none; display:block; margin:0 auto;">
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:2rem;">
+                <div class="theme-toggle btn-icon" id="theme-toggle" role="button" tabindex="0" aria-pressed="false" aria-label="Toggle theme" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.3); border: 1px solid var(--glass-border); color: var(--text-muted); transition: var(--transition-premium);">
+                    <i data-lucide="moon" id="theme-icon-moon"></i>
+                    <i data-lucide="sun" id="theme-icon-sun" style="display: none;"></i>
+                </div>
+                <div class="notification-bell btn-icon" role="button" tabindex="0" aria-label="Open notifications">
+                    <i data-lucide="bell" style="color:var(--primary); cursor:pointer;"></i>
+                    <span class="bell-dot"
+                        style="display:none; position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.65rem; padding:2px 6px; border-radius:10px; font-weight:800; border:2px solid white; align-items:center; justify-content:center; min-width:20px; height:20px;">0</span>
+                </div>
+                <button class="btn-terminate" id="admin-logout">
+                    <i data-lucide="log-out"></i><span>Exit Admin Mode</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="admin-tabs">
+            <div class="admin-tab active" data-target="personnel-panel">Clinical Personnel</div>
+            <div class="admin-tab" data-target="students-panel">Student Registry</div>
+            <div class="admin-tab" data-target="system-panel">System Status</div>
+        </div>
+
+        <!-- Personnel Management -->
+        <div id="personnel-panel" class="admin-panel active">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h2 style="font-family:'Outfit';">Personnel Directory</h2>
+                <button class="btn-primary mini" id="add-nurse-btn">
+                    <i data-lucide="user-plus"></i> Add New Officer
+                </button>
+            </div>
+            <div class="logo" style="justify-content:center;">
+                <div class="clinical-logo lcd-panel" style="text-align:center;">
+                    <img src="vcm-logo.png" alt="VCM Logo" class="logo-img" style="height:91px; width:auto; pointer-events:none; display:block; margin:0 auto;">
+                </div>
+            </div>
+            <div class="glass sheen" style="padding:1.5rem; border-radius:24px;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Identity ID</th>
+                            <th>Full Name</th>
+                            <th>Assigned Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-nurses-list">
+                        <!-- Personnel rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Student Management -->
+        <div id="students-panel" class="admin-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h2 style="font-family:'Outfit';">Student Registry</h2>
+            </div>
+            <div class="glass sheen" style="padding:1.5rem; border-radius:24px;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ADM NO</th>
+                            <th>Name</th>
+                            <th>Class</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-students-list">
+                        <!-- Student rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- System Settings -->
+        <div id="system-panel" class="admin-panel">
+            <h2 style="font-family:'Outfit'; margin-bottom:1.5rem;">System Configuration</h2>
+            <div class="settings-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
+                <div class="glass sheen" style="padding:2rem; border-radius:24px;">
+                    <h3>Institutional Identity</h3>
+                    <p style="color:var(--text-muted); margin-bottom:1.5rem;">Modify the primary institution name
+                        displayed site-wide.</p>
+                    <div class="form-group">
+                        <label>Institution Name</label>
+                        <input type="text" id="sys-inst-name" class="glass-input" value="SICKBAY INTEL">
+                    </div>
+                    <button class="btn-primary" id="save-sys-settings">Update Protocol</button>
+                </div>
+                <div class="glass sheen" style="padding:2rem; border-radius:24px;">
+                    <h3>Data Maintenance</h3>
+                    <p style="color:var(--text-muted); margin-bottom:1.5rem;">Perform bulk data operations.</p>
+                    <button class="btn-terminate" id="reset-system-data" style="width:100%;">
+                        <i data-lucide="trash-2"></i> EMERGENCY SYSTEM RESET
+                    </button>
+                </div>
+                <!-- Security Management -->
+                <div class="glass sheen" style="padding:2rem; border-radius:24px; grid-column: 1 / -1;">
+                    <h3>Security Management</h3>
+                    <p style="color:var(--text-muted); margin-bottom:1.5rem;">Update system-wide Master Key and Security
+                        Phrase. Authenticated authorization required.</p>
+                    <form id="admin-security-form" style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                        <div class="form-group">
+                            <label>Current Master Key</label>
+                            <input type="password" id="old-master-key" class="glass-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>New Master Key</label>
+                            <input type="password" id="new-master-key" class="glass-input" required>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>New Security Override Phrase</label>
+                            <input type="text" id="new-security-phrase" class="glass-input" required>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <button type="submit" class="btn-primary" style="width:100%;">AUTHORIZE CREDENTIAL
+                                UPDATE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audit History Modal -->
+    <div id="audit-history-modal" class="modal glass sheen">
+        <div class="modal-content glass sheen" style="max-width: 800px;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="audit-title">Personnel Clinical Audit</h3>
+                    <p id="audit-subtitle" style="font-size:0.85rem; color:var(--text-muted);"></p>
+                </div>
+                <button class="btn-icon" id="close-audit-modal"><i data-lucide="x"></i></button>
+            </div>
+            <div id="audit-history-content" style="max-height: 500px; overflow-y: auto; padding-right: 1rem;">
+                <!-- Audit logs injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Nurse Modal -->
+    <div id="add-nurse-modal" class="modal glass sheen">
+        <div class="modal-content glass sheen">
+            <div class="modal-header">
+                <h3>Provision New Clinical Officer</h3>
+                <button class="btn-icon" id="close-add-nurse-modal"><i data-lucide="x"></i></button>
+            </div>
+            <form id="add-nurse-form" class="premium-form">
+                <div class="form-group">
+                    <label>Assigned Officer ID</label>
+                    <input type="text" id="new-nurse-id" required placeholder="NURSE-XXX">
+                </div>
+                <div class="form-group">
+                    <label>Full Legal Name</label>
+                    <input type="text" id="new-nurse-name" required placeholder="Sr. Nurse...">
+                </div>
+                <div class="form-group">
+                    <label>Access Key (PIN)</label>
+                    <input type="password" id="new-nurse-pass" required placeholder="1234">
+                </div>
+                <div class="form-group">
+                    <label>Assigned Protocol Role</label>
+                    <select id="new-nurse-role">
+                        <option value="Chief Med Officer">Chief Med Officer</option>
+                        <option value="Operational Supervisor">Operational Supervisor</option>
+                        <option value="Admin Officer">Admin Officer</option>
+                        <option value="Clinical Staff">Clinical Staff</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary w-full">AUTHORIZE PROVISIONING</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Inline script to handle admin-specific UI before app.js init completes if needed
+        // but mostly we will delegate to app.js
+    </script>
+    <!-- AI Assistant Slim Tab + Right-side Panel (overlay, doesn't take layout space) -->
+    <div id="ai-assistant-tab" role="button" aria-label="Open AI Assistant" title="AI Assistant" style="position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:10001; width:48px; height:120px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg, var(--primary), var(--secondary)); border-radius:12px 0 0 12px; box-shadow:0 10px 30px rgba(0,0,0,0.15); cursor:pointer;">
+        <div class="ai-tab-close" id="ai-tab-close" title="Disable Assistant"><i data-lucide="x"></i></div>
+        <i data-lucide="message-square" style="color:var(--white); width:22px; height:22px;"></i>
+    </div>
+
+    <div id="ai-assistant-panel" class="glass sheen" aria-hidden="true" style="position:fixed; right:0; top:0; height:100vh; width:270px; max-width:66vw; z-index:10002; padding:0.85rem; box-shadow: -30px 0 60px rgba(0,0,0,0.25); transform: translateX(110%); transition: transform 260ms ease;">
+        <div style="display:flex; flex-direction:column; height:100%; gap:0.6rem;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.75rem;">
+                <div style="flex:1; min-width:0;">
+                    <h3 style="margin:0;">AI Medical Assistant</h3>
+                    <p style="margin:0; color:var(--text-muted); font-size:0.85rem;">Automatically uses the internet when connected; offline mode still answers using local data and built-in clinical reference.</p>
+                    <span id="ai-assistant-status" class="ai-status-badge" title="Loading assistant status...">Checking...</span>
+                </div>
+                <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+                    <input id="ai-api-key" placeholder="OpenAI API key (optional)" style="padding:8px 10px; border-radius:8px; border:1px solid var(--glass-border); width:180px;">
+                    <button class="btn-icon" id="ai-save-key-btn">Save</button>
+                    <button class="btn-icon" id="close-ai-assistant-btn" aria-label="Exit AI assistant" title="Exit AI assistant" style="display:inline-flex; align-items:center; gap:0.35rem;"><i data-lucide="x"></i><span>Exit</span></button>
+                </div>
+            </div>
+
+            <div id="ai-assistant-body" style="display:flex; flex-direction:column; gap:0.75rem; flex:1;">
+                <div id="ai-messages" style="flex:1; max-height:calc(100% - 120px); overflow:auto; padding:0.75rem; background:rgba(0,0,0,0.03); border-radius:12px;"></div>
+
+                <div style="display:flex; gap:0.5rem; align-items:center; margin-top:0.5rem;">
+                    <input id="ai-query" placeholder="Ask about a drug, dosage, side effects, or inventory." style="flex:1; padding:12px 14px; border-radius:12px; border:1px solid var(--glass-border);">
+                    <button id="ai-send-btn" class="btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+

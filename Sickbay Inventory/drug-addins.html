@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drug Add-ins | VCM Sickbay Intel</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/offline-icons.js"></script>
+    <style>
+        .addins-shell {
+            display: grid;
+            gap: 2.25rem;
+        }
+
+        .drug-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .drug-form-grid .wide {
+            grid-column: 1 / -1;
+        }
+
+        .drug-form-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .drug-form-note strong {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 860px) {
+            .drug-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="clinical-theme">
+    <div class="app-container" id="main-app">
+        <aside class="sidebar glass" id="sidebar">
+            <div class="logo" style="justify-content: center; margin-bottom: 3rem;">
+                <div class="clinical-logo lcd-panel" style="width: auto; height: auto; background: transparent; border: none; box-shadow: none; margin: 0;">
+                    <img src="vcm-logo.png" alt="VCM Logo" class="logo-img" style="height: 65px; width: auto; max-width: 100%;">
+                </div>
+            </div>
+            <nav id="sidebar-nav">
+                <ul>
+                    <li class="nav-link" data-view="dashboard">
+                        <i data-lucide="layout-dashboard"></i><span>Dashboard</span>
+                    </li>
+                    <li class="nav-link active" data-view="drug-addins">
+                        <i data-lucide="pill"></i><span>Drug Add-ins</span>
+                    </li>
+                    <li class="nav-link" data-view="inventory">
+                        <i data-lucide="package"></i><span>Inventory</span>
+                    </li>
+                    <li class="nav-link" data-view="students">
+                        <i data-lucide="users"></i><span>Students</span>
+                    </li>
+                    <li class="nav-link" data-view="records">
+                        <i data-lucide="clipboard-list"></i><span>Clinical Records</span>
+                    </li>
+                    <li class="nav-link" data-view="reports">
+                        <i data-lucide="bar-chart-3"></i><span>Reports</span>
+                    </li>
+                    <li class="nav-link" data-view="settings">
+                        <i data-lucide="settings"></i><span>Settings</span>
+                    </li>
+                    <li class="nav-link admin-only" onclick="window.location.href='admin.html'">
+                        <i data-lucide="shield-alert" style="color:var(--danger);"></i><span style="color:var(--danger); font-weight:800;">System Administration</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="active-nurse-card glass">
+                    <span class="nurse-label">On Duty</span>
+                    <span id="active-nurse-name">Unknown</span>
+                </div>
+                <button class="btn-terminate w-full" id="logout-btn">
+                    <i data-lucide="log-out"></i><span>Terminate Session</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header glass">
+                <div class="search-bar">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="global-search" placeholder="Search drug add-ins or inventory...">
+                </div>
+                <div class="user-profile">
+                    <div class="theme-toggle" id="theme-toggle" style="margin-right: 0.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.3); border: 1px solid var(--glass-border); color: var(--text-muted); transition: var(--transition-premium);">
+                        <i data-lucide="moon" id="theme-icon-moon"></i>
+                        <i data-lucide="sun" id="theme-icon-sun" style="display: none;"></i>
+                    </div>
+                    <div class="notification-bell">
+                        <i data-lucide="bell"></i>
+                        <span class="bell-dot" style="display:none; position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.65rem; padding:2px 6px; border-radius:10px; font-weight:800; border:2px solid white; align-items:center; justify-content:center; min-width:20px; height:20px;">0</span>
+                    </div>
+                    <div class="divider hide-mobile"></div>
+                    <div class="nurse-profile-trigger" id="nurse-profile-trigger">
+                        <div class="nurse-info">
+                            <span id="header-nurse-name">Clinical Staff</span>
+                            <i data-lucide="chevron-down" size="14" class="chevron"></i>
+                        </div>
+                        <div class="avatar-wrapper">
+                            <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230ea5e9'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Segoe%20UI%2CArial%2Csans-serif' font-size='22' font-weight='700' fill='white'%3EN%3C/text%3E%3C/svg%3E" id="nurse-avatar" alt="Avatar">
+                        </div>
+                        <div class="profile-dropdown glass sheen" id="profile-dropdown">
+                            <button class="dropdown-item" id="header-logout-btn" title="">
+                                <i data-lucide="log-out"></i>
+                                <span>Sign-out</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="workspace-area addins-shell">
+                <section class="header-actions">
+                    <div class="title-group">
+                        <h2>Drug Add-ins</h2>
+                        <p class="subtitle">Add new drugs using pack counts, units per pack, and loose units.</p>
+                    </div>
+                    <button type="button" id="available-drugs-btn" class="btn-primary" style="white-space:nowrap;">
+                        <i data-lucide="pill"></i>
+                        <span>Available Drugs</span>
+                    </button>
+                </section>
+
+                <div class="drug-entry-layout">
+                    <section class="glass sheen" style="padding:1.5rem; border-radius:24px;">
+                        <form id="add-item-form" class="premium-form">
+                            <div class="drug-form-grid">
+                                <div class="form-group wide">
+                                    <label for="new-item-name">Drug Name</label>
+                                    <input type="text" id="new-item-name" required placeholder="e.g. Paracetamol 500mg">
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-item-category">Category</label>
+                                    <select id="new-item-category" required>
+                                        <option value="Medication" selected>Medication</option>
+                                        <option value="Bandage">Bandage</option>
+                                        <option value="Diagnostic">Diagnostic</option>
+                                        <option value="Consumable">Consumable</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-item-expiry">Expiry Date</label>
+                                    <input type="date" id="new-item-expiry" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-item-packs">Packs</label>
+                                    <input type="number" id="new-item-packs" min="0" value="0" placeholder="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-item-units-per-pack">Units per Pack</label>
+                                    <input type="number" id="new-item-units-per-pack" min="0" value="0" placeholder="10">
+                                </div>
+                                <div class="form-group wide">
+                                    <label for="new-item-loose-units">Loose Units</label>
+                                    <input type="number" id="new-item-loose-units" min="0" value="0" placeholder="0">
+                                </div>
+                            </div>
+
+                            <p class="drug-form-note" style="margin:1rem 0 1.25rem;">
+                                <strong>Formula:</strong> total units = packs × units per pack + loose units. The entry will be added to the main inventory table.
+                            </p>
+
+                            <button type="submit" class="btn-primary" style="width:100%; height:64px; font-size:1rem;">
+                                <i data-lucide="plus-circle" style="margin-right:10px;"></i>
+                                Add Drug to Inventory
+                            </button>
+                        </form>
+                    </section>
+
+                    <aside id="available-drugs-panel" class="available-drugs-panel glass sheen" aria-hidden="true">
+                        <div class="available-drugs-panel-header">
+                            <div>
+                                <h3>Available Drugs</h3>
+                                <p>Pick an existing drug to preload the form.</p>
+                            </div>
+                            <button type="button" id="close-available-drugs-panel" class="btn-icon mini" aria-label="Close available drugs panel">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="form-group" style="margin-bottom:1rem;">
+                            <label for="available-drugs-search">Search available drugs</label>
+                            <input type="text" id="available-drugs-search" placeholder="Type a drug name or category">
+                        </div>
+                        <div id="available-drugs-list" class="available-drugs-list" role="list"></div>
+                    </aside>
+                </div>
+
+                <section class="inventory-table-grid glass sheen">
+                    <div class="table-responsive">
+                        <table id="inventory-table">
+                            <thead>
+                                <tr>
+                                    <th>Drug Name</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Last Entry</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/drugs_db.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

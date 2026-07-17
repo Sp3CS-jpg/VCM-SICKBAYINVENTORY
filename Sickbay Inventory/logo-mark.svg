@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Sickbay logo">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="144" height="144" rx="32" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.35)"/>
+  <path d="M80 24L112 40v40c0 27-18 48-32 56-14-8-32-29-32-56V40L80 24z" fill="url(#g)" opacity="0.96"/>
+  <path d="M68 66h24v14H68v24H54V80H30V66h24V42h14v24z" fill="#fff" opacity="0.98"/>
+</svg>

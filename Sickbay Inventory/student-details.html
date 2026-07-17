@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> VCM SICKBAY INTEL | Clinical Student Breakdown</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/offline-icons.js"></script>
+</head>
+
+<body class="clinical-theme">
+    <!-- Premium Liquid Background -->
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass" id="sidebar">
+            <div class="logo" style="justify-content: center; margin-bottom: 3rem;">
+                <div class="clinical-logo" style="width: auto; height: auto; background: transparent; border: none; box-shadow: none; margin: 0;">
+                    <img src="vcm-logo.png" alt="VCM Logo" class="logo-img" style="height:85px; width: auto; max-width: 100%; pointer-events:none; display:block; margin:0 auto;">
+                </div>
+            </div>
+            <nav id="sidebar-nav">
+                <ul>
+                    <li class="nav-link" data-view="dashboard">
+                        <i data-lucide="layout-dashboard"></i><span>Dashboard</span>
+                    </li>
+                    <li class="nav-link" data-view="drug-addins">
+                        <i data-lucide="pill"></i><span>Drug Add-ins</span>
+                    </li>
+                    <li class="nav-link" data-view="inventory">
+                        <i data-lucide="package"></i><span>Inventory</span>
+                    </li>
+                    <li class="nav-link active" data-view="students">
+                        <i data-lucide="users"></i><span>Students</span>
+                    </li>
+                    <li class="nav-link" data-view="records">
+                        <i data-lucide="clipboard-list"></i><span>Clinical Records</span>
+                    </li>
+                    <li class="nav-link" data-view="reports">
+                        <i data-lucide="bar-chart-3"></i><span>Reports</span>
+                    </li>
+                    <li class="nav-link" data-view="settings">
+                        <i data-lucide="settings"></i><span>Settings</span>
+                    </li>
+                    <li class="nav-link admin-only" onclick="window.location.href='admin.html'">
+                        <i data-lucide="shield-alert" style="color:var(--danger);"></i><span
+                            style="color:var(--danger); font-weight:800;">System Administration</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="active-nurse-card glass">
+                    <span class="nurse-label">On Duty</span>
+                    <span id="active-nurse-name">Unknown</span>
+                </div>
+                <button class="btn-terminate w-full" id="logout-btn">
+                    <i data-lucide="log-out"></i><span>Terminate Session</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <header class="main-header glass sheen">
+                <div class="search-bar">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="global-search" placeholder="Search specific student interaction...">
+                </div>
+                <div class="user-profile">
+                    <div class="theme-toggle" id="theme-toggle" style="margin-right: 0.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.3); border: 1px solid var(--glass-border); color: var(--text-muted); transition: var(--transition-premium);">
+                        <i data-lucide="moon" id="theme-icon-moon"></i>
+                        <i data-lucide="sun" id="theme-icon-sun" style="display: none;"></i>
+                    </div>
+                    <div class="notification-bell">
+                        <i data-lucide="bell" class="icon-primary"></i>
+                        <span class="bell-dot"
+                            style="display:none; position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.65rem; padding:2px 6px; border-radius:10px; font-weight:800; border:2px solid white; align-items:center; justify-content:center; min-width:20px; height:20px;">0</span>
+                    </div>
+                    <div class="divider hide-mobile"></div>
+                    <div class="nurse-profile-trigger" id="nurse-profile-trigger">
+                        <div class="nurse-info">
+                            <span id="header-nurse-name">Clinical Staff</span>
+                            <i data-lucide="chevron-down" size="14" class="chevron"></i>
+                        </div>
+                        <div class="avatar-wrapper">
+                            <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230ea5e9'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Segoe%20UI%2CArial%2Csans-serif' font-size='22' font-weight='700' fill='white'%3EN%3C/text%3E%3C/svg%3E"
+                                id="nurse-avatar" alt="Avatar">
+                        </div>
+                        <div class="profile-dropdown glass sheen" id="profile-dropdown">
+                            <button class="dropdown-item" id="header-logout-btn" title="">
+                                <i data-lucide="log-out"></i>
+                                <span>Sign-out</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="workspace-area">
+                <section id="student-details-view" class="view active">
+                    <div class="header-actions sheen"
+                        style="padding: 1.5rem; border-radius: 24px; margin-bottom: 2rem;">
+                        <button class="btn-secondary mini" onclick="window.history.back()">
+                            <i data-lucide="arrow-left"></i>
+                            <span>Return to Directory</span>
+                        </button>
+                        <div class="title-group" style="margin-left: 2rem;">
+                            <h2 id="student-name-header">Student Breakdown</h2>
+                            <p class="subtitle">Complete clinical history and active medical protocols</p>
+                        </div>
+                        <div style="margin-left: auto; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: flex-end;">
+                            <button id="manual-referral-btn" class="btn-secondary">
+                                <i data-lucide="pen-line"></i> Manual Referral
+                            </button>
+                            <button id="generate-referral-btn" class="btn-primary">
+                                <i data-lucide="file-text"></i> Generate Referral
+                            </button>
+                            <button id="add-record-btn" class="btn-primary">
+                                <i data-lucide="file-plus"></i> Add New Entry
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="student-bio-container">
+                        <!-- Student Bio Card injected via JS -->
+                    </div>
+
+                    <div id="student-history-timeline" class="history-timeline" style="margin-top: 2rem;">
+                        <!-- Timeline entries injected via JS -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Clinical Record Management Modal (Create/Edit) -->
+    <div id="record-modal" class="modal glass sheen">
+        <div class="modal-content glass sheen">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <h2 id="record-modal-title">Clinical Record Protocol</h2>
+                    <p class="subtitle">Secure medical entry documentation</p>
+                </div>
+                <button class="btn-icon-premium" id="close-record-modal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="record-form" class="clinical-form">
+                <input type="hidden" id="record-student-id">
+                <input type="hidden" id="record-entry-index"> <!-- For editing -->
+
+                <div class="form-group">
+                    <label>Patient Identity</label>
+                    <input type="text" id="record-student-name" readonly class="glass-input">
+                </div>
+
+                <div class="form-group">
+                    <label>Clinical Complaint / Observation</label>
+                    <textarea id="record-complaint" required class="glass-input"
+                        placeholder="Document symptoms and clinical findings..." rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Treatment Administered / Recommendation</label>
+                    <input type="text" id="record-treatment" required class="glass-input"
+                        placeholder="e.g. Paracetamol, Bed rest, Referred to specialist">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary w-full">
+                        <i data-lucide="shield-check"></i>
+                        <span id="record-submit-text">Authorize & Save Entry</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal (Admin Only) -->
+    <div id="edit-student-modal" class="modal glass sheen">
+        <div class="modal-content glass sheen">
+            <div class="modal-header">
+                <h3>Update Student Identity</h3>
+                <button class="btn-icon" id="close-edit-student-modal"><i data-lucide="x"></i></button>
+            </div>
+            <form id="edit-student-form" class="premium-form" onsubmit="handleEditStudentSubmit(event)">
+                <input type="hidden" id="edit-student-id">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="edit-student-name" required>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Class/Grade</label>
+                        <input type="text" id="edit-student-class" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="edit-student-dob">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Admission No</label>
+                        <input type="text" id="edit-student-admission" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sickbay No</label>
+                        <input type="text" id="edit-student-sickbay" required placeholder="0000">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary w-full">AUTHORIZE UPDATE</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Referral Modal -->
+    <div id="referral-modal" class="modal glass-modal">
+        <div class="modal-content glass referral-content">
+            <div class="modal-header">
+                <h3>Clinical Referral Authorization</h3>
+                <button id="close-referral-modal" class="btn-icon"><i data-lucide="x"></i></button>
+            </div>
+            <div class="referral-helpbar">
+                <span>Auto-generate the letter, then click inside it to edit manually before printing.</span>
+                <button id="regen-referral-btn" class="btn-secondary mini" type="button">
+                    <i data-lucide="rotate-ccw"></i> Auto Generate
+                </button>
+            </div>
+            <div id="referral-preview" class="referral-letter glass sheen" contenteditable="true" spellcheck="true" aria-label="Editable referral letter">
+                <!-- Letter content injected via JS -->
+            </div>
+            <div class="modal-footer">
+                <button id="print-referral-btn" class="btn-secondary">
+                    <i data-lucide="printer"></i> Print / Save PDF
+                </button>
+                <button id="send-principal-btn" class="btn-primary">
+                    <i data-lucide="send"></i> Dispatch to Principal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Additional page-specific initialization if needed
+        document.getElementById('close-edit-student-modal').addEventListener('click', () => {
+            document.getElementById('edit-student-modal').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
+
+

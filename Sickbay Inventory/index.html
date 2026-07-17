@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sickbay Intel | Enterprise Clinical Portal</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/offline-icons.js"></script>
+</head>
+
+<body>
+    <!-- Premium Liquid Background -->
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- 20 Billion Dollar Hospital Liquid Glass Login Portal -->
+    <div id="login-portal" class="login-overlay active">
+        <div class="falling-medical-assets" id="falling-container-overlay"></div>
+        <div class="login-card glass sheen">
+            <div class="login-logo">
+                    <div class="clinical-logo" style="margin: 0 auto; width: auto; height: auto; background: transparent; border: none; box-shadow: none; text-align:center;">
+                    <img src="vcm-logo.png" alt="VCM Logo" class="logo-img" style="height:130px; width: auto; pointer-events:none; display:block; margin:0 auto;">
+                </div>
+            </div>
+            
+            <div class="role-selector">
+                <button type="button" class="role-option" data-login-role="nurse">Nurse</button>
+                <button type="button" class="role-option" data-login-role="management">Management Staff</button>
+            </div>
+            <p class="login-error" id="login-role-error">Please select a sign-in role above.</p>
+
+            <form id="login-form" class="premium-form" style="display:none;">
+                <div class="form-group-floating">
+                    <input type="text" id="nurse-id" required placeholder="Personnel ID">
+                    <label>PERSONNEL ID</label>
+                </div>
+                <div class="form-group-floating">
+                    <input type="password" id="nurse-pass" required placeholder="Security Key">
+                    <label>SECURITY KEY</label>
+                </div>
+
+                <button type="submit" class="btn-auth-premium">
+                    <span>AUTHORIZE SESSION</span>
+                    <i data-lucide="shield-check"></i>
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <div class="status-indicator">
+                    <span class="dot-pulse"></span>
+                    <span class="status-text">SYSTEM SECURE</span>
+                </div>
+                <div class="encryption-notice">
+                    <i data-lucide="lock" size="12"></i>
+                    <span>AES-512 ACTIVE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main Enterprise Dashboard -->
+    <div class="app-container" id="main-app">
+        <div class="mobile-nav-header glass">
+            <div class="logo-mobile lcd-panel">
+                <i data-lucide="hospital" class="icon-primary" aria-hidden="true"></i>
+            </div>
+            <button id="hamburger-menu" class="btn-icon-premium">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+
+        <aside class="sidebar glass" id="sidebar">
+            <div class="logo" style="justify-content: center; margin-bottom: 3rem;">
+                <div class="clinical-logo lcd-panel" style="width: auto; height: auto; background: transparent; border: none; box-shadow: none; margin: 0;">
+                    <img src="vcm-logo.png" alt="VCM Logo" style="height: 65px; width: auto; max-width: 100%;">
+                </div>
+            </div>
+            <nav id="sidebar-nav">
+                <ul>
+                    <li class="nav-link active" data-view="dashboard">
+                        <i data-lucide="layout-dashboard"></i><span>Dashboard</span>
+                    </li>
+                    <li class="nav-link" data-view="drug-addins">
+                        <i data-lucide="pill"></i><span>Drug Add-ins</span>
+                    </li>
+                    <li class="nav-link" data-view="inventory">
+                        <i data-lucide="package"></i><span>Inventory</span>
+                    </li>
+                    <li class="nav-link" data-view="students">
+                        <i data-lucide="users"></i><span>Students</span>
+                    </li>
+                    <li class="nav-link" data-view="records">
+                        <i data-lucide="clipboard-list"></i><span>Clinical Records</span>
+                    </li>
+                    <li class="nav-link" data-view="reports">
+                        <i data-lucide="bar-chart-3"></i><span>Reports</span>
+                    </li>
+                    <li class="nav-link" data-view="settings">
+                        <i data-lucide="settings"></i><span>Settings</span>
+                    </li>
+                    <li class="nav-link admin-only" onclick="window.location.href='admin.html'">
+                        <i data-lucide="shield-alert" style="color:var(--danger);"></i><span
+                            style="color:var(--danger); font-weight:800;">System Administration</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="active-nurse-card glass">
+                    <span class="nurse-label">On Duty</span>
+                    <span id="active-nurse-name">Unknown</span>
+                </div>
+                <button class="btn-terminate w-full" id="logout-btn">
+                    <i data-lucide="log-out"></i><span>Terminate Session</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header glass">
+                <div class="search-bar">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="global-search" placeholder="Search clinical assets or student records...">
+                </div>
+                <div class="user-profile">
+                    <div class="theme-toggle" id="theme-toggle" style="margin-right: 0.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.3); border: 1px solid var(--glass-border); color: var(--text-muted); transition: var(--transition-premium);">
+                        <i data-lucide="moon" id="theme-icon-moon"></i>
+                        <i data-lucide="sun" id="theme-icon-sun" style="display: none;"></i>
+                    </div>
+                    <div class="notification-bell">
+                        <i data-lucide="bell"></i>
+                        <span class="bell-dot"
+                            style="display:none; position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; font-size:0.65rem; padding:2px 6px; border-radius:10px; font-weight:800; border:2px solid white; align-items:center; justify-content:center; min-width:20px; height:20px;">0</span>
+                    </div>
+                    <div class="divider hide-mobile"></div>
+                    <div class="nurse-profile-trigger" id="nurse-profile-trigger">
+                        <div class="nurse-info">
+                            <span id="header-nurse-name">Clinical Staff</span>
+                            <i data-lucide="chevron-down" size="14" class="chevron"></i>
+                        </div>
+                        <div class="avatar-wrapper">
+                            <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230ea5e9'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Segoe%20UI%2CArial%2Csans-serif' font-size='22' font-weight='700' fill='white'%3EN%3C/text%3E%3C/svg%3E"
+                                id="nurse-avatar" alt="Avatar">
+                        </div>
+                        <div class="profile-dropdown glass sheen" id="profile-dropdown">
+                            <button class="dropdown-item" id="header-logout-btn" title="">
+                                <i data-lucide="log-out"></i>
+                                <span>Sign-out</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div id="view-container">
+                <!-- Dashboard View -->
+                <section id="dashboard-view" class="view active">
+                    <div class="header-actions sheen">
+                        <div class="title-group">
+                            <h2>Clinical Intelligence</h2>
+                            <p class="subtitle">Operational status of medical infrastructure</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card glass sheen interactive">
+                            <div class="stat-icon-wrapper blue"><i data-lucide="database"></i></div>
+                            <div class="stat-info"><span class="stat-label">Total Assets</span><span class="stat-value"
+                                    id="total-items-count">0</span></div>
+                        </div>
+                        <div class="stat-card glass sheen interactive critical">
+                            <div class="stat-icon-wrapper red"><i data-lucide="alert-triangle"></i></div>
+                            <div class="stat-info"><span class="stat-label">Shortages</span><span class="stat-value"
+                                    id="low-stock-count">0</span></div>
+                        </div>
+                        <div class="stat-card glass sheen interactive success"
+                            onclick="window.location.href='students.html'">
+                            <div class="stat-icon-wrapper green"><i data-lucide="user-check"></i></div>
+                            <div class="stat-info"><span class="stat-label">Active Students</span><span
+                                    class="stat-value" id="total-students-count">0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Chart -->
+                    <div class="chart-card glass sheen" style="margin-top:1.5rem; padding:1.25rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                            <h4 style="margin:0; font-family:Outfit;">Sickbay Visits (30 days)</h4>
+                            <div style="font-size:0.85rem; color:var(--text-muted);">Daily visits</div>
+                        </div>
+                        <canvas id="attendance-chart" height="140"></canvas>
+                    </div>
+
+                    <!-- Medication Monitor Section -->
+                    <div class="medication-monitor-container glass sheen" style="margin-top: 2rem; padding: 2rem;">
+                        <div class="header-actions" style="margin-bottom: 1.5rem;">
+                            <div class="title-group">
+                                <h3
+                                    style="font-family:'Outfit'; font-size:1.5rem; display:flex; align-items:center; gap:0.75rem;">
+                                    <i data-lucide="clock" style="color:var(--primary);"></i>
+                                    Active Medication Monitor
+                                </h3>
+                                <p class="subtitle">Real-time tracking of students currently undergoing treatment</p>
+                            </div>
+                        </div>
+                        <div id="active-medication-list" class="med-monitor-grid"
+                            style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                            <!-- Active medications injected via JS -->
+                            <div class="placeholder-card"
+                                style="text-align:center; padding:3rem; color:var(--text-muted); grid-column: 1/-1;">
+                                <p>No active medication protocols detected.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id="management-view" class="view">
+                    <div class="header-actions sheen" style="justify-content:space-between; gap:1rem;">
+                        <div class="title-group">
+                            <h2>Management Staff Overview</h2>
+                            <p class="subtitle">Read-only roster of registered clinical personnel and login credentials.</p>
+                        </div>
+                        <span class="badge" style="background:rgba(14,165,233,0.12); color:var(--primary);">READ-ONLY ACCESS</span>
+                    </div>
+                    <div class="glass sheen management-roster-panel">
+                        <table class="management-table">
+                            <thead>
+                                <tr>
+                                    <th>Login ID</th>
+                                    <th>Full Name</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>Role</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="management-nurse-roster">
+                                <!-- Nurse roster injected via JS -->
+                            </tbody>
+                        </table>
+                        <p class="management-note">
+                            Management staff may view registered personnel and credentials here. Only the Principal can add or remove nurses.
+                        </p>
+                    </div>
+                    <div id="management-principal-controls" class="glass sheen management-controls" style="display:none;">
+                        <h3>Principal Nurse Administration</h3>
+                        <form id="management-add-nurse-form" class="management-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Officer ID</label>
+                                    <input type="text" id="principal-new-nurse-id" required placeholder="e.g. NURSE-005">
+                                </div>
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="principal-new-nurse-name" required placeholder="e.g. Nurse Jane Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label>Access Key</label>
+                                    <input type="password" id="principal-new-nurse-pass" required placeholder="Unique password">
+                                </div>
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select id="principal-new-nurse-role">
+                                        <option value="Clinical Nurse">Clinical Nurse</option>
+                                        <option value="Management Staff">Management Staff</option>
+                                        <option value="Principal">Principal</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">Add New Nurse</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Students View -->
+                <section id="students-view" class="view">
+                    <div class="header-actions">
+                        <h2>Clinical Directory Redirect</h2>
+                        <p class="subtitle">Redirecting to multi-page record system...</p>
+                    </div>
+
+                    <div id="students-grid" class="students-grid">
+                        <!-- Student cards injected via JS -->
+                    </div>
+                </section>
+
+                <!-- Other modules as placeholders -->
+                <section id="reports-view" class="view">
+                    <div class="placeholder-view glass">
+                        <i data-lucide="bar-chart-big" size="64"></i>
+                        <h3>Reporting Module</h3>
+                        <p>Enterprise analytics and consumption forecasting.</p>
+                    </div>
+                </section>
+
+                <section id="settings-view" class="view">
+                    <div class="placeholder-view glass">
+                        <i data-lucide="shield-alert" size="64"></i>
+                        <h3>System Protocol</h3>
+                        <p>Security overrides and personnel management.</p>
+                    </div>
+                </section>
+
+                <section id="inventory-view" class="view">
+                    <div class="placeholder-view glass">
+                        <i data-lucide="archive" size="64"></i>
+                        <h3>Repository View</h3>
+                        <p>Full catalog management.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Issue Asset Modal -->
+    <div id="issue-asset-modal" class="modal glass-modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>Authorize Asset Issuance</h3>
+                <button id="close-issue-modal" class="btn-icon"><i data-lucide="x"></i></button>
+            </div>
+            <form id="issue-asset-form" class="premium-form auth-form">
+                <div class="form-group">
+                    <label>Target Student</label>
+                    <input type="text" id="target-student-name" readonly class="readonly-input">
+                    <input type="hidden" id="target-student-id">
+                </div>
+                <div class="form-group">
+                    <label>Clinical Complaint / Reason</label>
+                    <textarea id="issue-complaint" required placeholder="Describe clinical findings..."></textarea>
+                </div>
+                <div class="form-group asset-picker-group">
+                    <label>Clinical Asset Selector</label>
+                    <div class="asset-search-box glass">
+                        <i data-lucide="search" class="search-inner-icon"></i>
+                        <input type="text" id="asset-search" placeholder="Search clinical repository...">
+                    </div>
+                    <div id="asset-results-list" class="asset-results-list glass">
+                        <!-- Search results injected via JS -->
+                    </div>
+                    <input type="hidden" id="issue-asset-id" required>
+                    <div id="selected-asset-display" class="selected-asset-display glass sheen" style="display: none;">
+                        <div class="selected-info">
+                            <i data-lucide="pill"></i>
+                            <span id="selected-asset-name">No Asset Selected</span>
+                        </div>
+                        <button type="button" class="btn-icon mini" onclick="clearAssetSelection()"><i
+                                data-lucide="x"></i></button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Prescribed Unit Count</label>
+                    <input type="number" id="issue-quantity" required min="1" value="1">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary w-full">EXECUTE DISPENSATION</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="add-item-modal" class="modal glass-modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>Provision Clinical Asset</h3>
+                <button id="close-add-item-modal" class="btn-icon"><i data-lucide="x"></i></button>
+            </div>
+            <form id="add-item-form" class="premium-form auth-form">
+                <div class="form-group">
+                    <label>Asset Name</label>
+                    <input type="text" id="new-item-name" required placeholder="e.g. Regenerative Paracetamol">
+                </div>
+                <div class="form-group">
+                    <label>Category Classification</label>
+                    <select id="new-item-category" required>
+                        <option value="Medication">Medication</option>
+                        <option value="Bandage">Bandage</option>
+                        <option value="Diagnostic">Diagnostic</option>
+                        <option value="Equipment">Equipment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Initial Stock Level</label>
+                    <input type="number" id="new-item-quantity" required min="1" value="1">
+                </div>
+                <div class="form-group">
+                    <label>Manufacture Date</label>
+                    <input type="date" id="new-item-mfg-date" required>
+                </div>
+                <div class="form-group">
+                    <label>Expiration Protocol</label>
+                    <input type="date" id="new-item-expiry" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary w-full">PROVISION INTO REPOSITORY</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chart.js for attendance/usage charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- AI Assistant Tab + Panel (global) -->
+    <div id="ai-assistant-tab" role="button" aria-label="Open AI Assistant" title="AI Assistant" style="position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:10001; width:52px; height:260px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.35rem; background:linear-gradient(180deg, var(--primary), var(--secondary)); border-radius:18px 0 0 18px; box-shadow:0 18px 38px rgba(0,0,0,0.22); cursor:pointer;">
+        <i data-lucide="message-square" style="color:var(--white); width:22px; height:22px;"></i>
+        <span style="font-size:0.62rem; font-weight:800; text-transform:uppercase; letter-spacing:0.18em; color:var(--white); writing-mode:vertical-rl; transform:rotate(180deg);">AI</span>
+    </div>
+
+    <div id="ai-assistant-panel" class="glass sheen" aria-hidden="true" style="position:fixed; right:0; top:0; height:100vh; width:315px; max-width:71vw; z-index:10002; padding:1rem; box-shadow: -30px 0 60px rgba(0,0,0,0.25); transform: translateX(110%); transition: transform 260ms ease;">
+        <div style="display:flex; flex-direction:column; height:100%; gap:0.75rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                <div>
+                    <h3 style="margin:0;">AI Medical Assistant</h3>
+                    <p style="margin:0; color:var(--text-muted); font-size:0.85rem;">Offline answers use local data; paste OpenAI API key for web access.</p>
+                </div>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                    <input id="ai-api-key" placeholder="OpenAI API key (optional)" style="padding:8px 10px; border-radius:8px; border:1px solid var(--glass-border); width:240px;">
+                    <button class="btn-icon" id="ai-save-key-btn">Save</button>
+                    <button class="btn-icon mini" id="close-ai-assistant-btn" type="button" aria-label="Close AI assistant" title="Close AI assistant"><i data-lucide="x"></i></button>
+                </div>
+            </div>
+
+            <div id="ai-assistant-body" style="display:flex; flex-direction:column; gap:0.75rem; flex:1;">
+                <div id="ai-messages" style="flex:1; max-height:calc(100% - 120px); overflow:auto; padding:0.75rem; background:rgba(0,0,0,0.03); border-radius:12px;"></div>
+
+                <div style="display:flex; gap:0.5rem; align-items:center; margin-top:0.5rem;">
+                    <input id="ai-query" placeholder="Ask about a drug, dosage, side effects, or inventory." style="flex:1; padding:12px 14px; border-radius:12px; border:1px solid var(--glass-border);">
+                    <button id="ai-send-btn" class="btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/drugs_db.js"></script>
+    <script src="js/app.js"></script>
+ </body>
+
+</html>
+
+
