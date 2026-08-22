@@ -1,0 +1,1191 @@
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#02070b;
+    --panel:#07141c;
+    --panel2:#0b1c26;
+    --cyan:#00d9ff;
+    --green:#45ffb3;
+    --yellow:#ffd45c;
+    --red:#ff5c70;
+    --white:#f2fbff;
+    --muted:#71909d;
+    --border:rgba(70,220,255,.14);
+}
+
+body{
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(0,200,255,.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(0,255,170,.08),
+            transparent 30%
+        ),
+        var(--bg);
+
+    color:var(--white);
+
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    min-height:100vh;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginPage{
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:25px;
+}
+
+.login-box{
+
+    width:min(480px,100%);
+
+    padding:40px;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10,31,42,.97),
+            rgba(3,12,18,.98)
+        );
+
+    border:1px solid var(--border);
+
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.65),
+        inset 0 0 60px rgba(0,200,255,.025);
+
+    text-align:center;
+}
+
+.login-logo{
+
+    width:80px;
+    height:80px;
+
+    margin:0 auto 22px;
+
+    border-radius:25px;
+
+    display:grid;
+
+    place-items:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            var(--green)
+        );
+
+    color:#001014;
+
+    font-size:35px;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 0 45px rgba(0,220,255,.3);
+}
+
+.login-box h1{
+
+    font-size:28px;
+
+    letter-spacing:5px;
+}
+
+.subtitle{
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    letter-spacing:2px;
+
+    margin-top:8px;
+
+    margin-bottom:35px;
+}
+
+
+/* =========================
+   FORMS
+========================= */
+
+.form-group{
+
+    text-align:left;
+
+    margin-bottom:20px;
+}
+
+.form-group label{
+
+    display:block;
+
+    color:#7795a2;
+
+    font-size:11px;
+
+    letter-spacing:1px;
+
+    margin-bottom:8px;
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    background:#06131b;
+
+    color:white;
+
+    border:1px solid rgba(90,220,255,.13);
+
+    border-radius:13px;
+
+    padding:14px;
+
+    outline:none;
+
+    transition:.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:var(--cyan);
+
+    box-shadow:
+        0 0 20px rgba(0,220,255,.08);
+}
+
+textarea{
+
+    min-height:100px;
+
+    resize:vertical;
+}
+
+.primary-button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:0;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            var(--green)
+        );
+
+    color:#001014;
+
+    font-weight:bold;
+
+    letter-spacing:2px;
+
+    transition:.25s;
+}
+
+.primary-button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 15px 35px rgba(0,220,255,.2);
+}
+
+.login-note{
+
+    color:#4f6872;
+
+    font-size:10px;
+
+    margin-top:22px;
+
+    line-height:1.6;
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+#dashboard{
+
+    display:none;
+
+    min-height:100vh;
+}
+
+.container{
+
+    width:min(1450px,94%);
+
+    margin:auto;
+
+    padding:25px 0 50px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.brand-logo{
+
+    width:50px;
+    height:50px;
+
+    border-radius:16px;
+
+    display:grid;
+
+    place-items:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            var(--green)
+        );
+
+    color:#001014;
+
+    font-weight:bold;
+}
+
+.brand h2{
+
+    font-size:20px;
+
+    letter-spacing:3px;
+}
+
+.brand p{
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    letter-spacing:2px;
+
+    margin-top:4px;
+}
+
+.header-actions{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.icon-button{
+
+    background:#071820;
+
+    border:1px solid var(--border);
+
+    color:#9db6c0;
+
+    padding:10px 15px;
+
+    border-radius:11px;
+
+    cursor:pointer;
+}
+
+.icon-button:hover{
+
+    color:white;
+
+    border-color:var(--cyan);
+}
+
+
+/* =========================
+   USER
+========================= */
+
+.user-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:25px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(0,215,255,.08),
+            rgba(50,255,170,.035)
+        );
+
+    border:1px solid var(--border);
+
+    margin-bottom:20px;
+}
+
+.user-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+}
+
+.avatar{
+
+    width:65px;
+    height:65px;
+
+    border-radius:20px;
+
+    display:grid;
+
+    place-items:center;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    color:#001014;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            var(--green)
+        );
+}
+
+.user-name{
+
+    font-size:21px;
+
+    font-weight:bold;
+}
+
+.user-dob{
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    margin-top:5px;
+}
+
+.health-state{
+
+    padding:11px 16px;
+
+    border-radius:30px;
+
+    color:var(--green);
+
+    background:rgba(69,255,179,.08);
+
+    border:1px solid rgba(69,255,179,.2);
+
+    font-size:11px;
+
+    letter-spacing:1px;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.navigation{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(6,1fr);
+
+    gap:10px;
+
+    margin-bottom:20px;
+}
+
+.nav-button{
+
+    padding:15px 10px;
+
+    border-radius:13px;
+
+    border:1px solid var(--border);
+
+    background:#07151d;
+
+    color:#7794a0;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    font-size:11px;
+}
+
+.nav-button:hover,
+.nav-button.active{
+
+    color:white;
+
+    background:#0b222d;
+
+    border-color:
+        rgba(0,220,255,.35);
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+
+    display:none;
+}
+
+.section.active{
+
+    display:block;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9,29,39,.95),
+            rgba(4,15,21,.98)
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:22px;
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.2);
+}
+
+.card:hover{
+
+    border-color:
+        rgba(0,220,255,.25);
+}
+
+.grid-4{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.card-label{
+
+    color:#6f8b97;
+
+    font-size:10px;
+
+    letter-spacing:1.5px;
+}
+
+.card-value{
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:29px;
+
+    margin-top:13px;
+
+    font-weight:bold;
+}
+
+.card-unit{
+
+    color:#607984;
+
+    font-size:10px;
+}
+
+.card-status{
+
+    margin-top:9px;
+
+    font-size:10px;
+
+    color:var(--green);
+}
+
+
+/* =========================
+   LCD
+========================= */
+
+.lcd{
+
+    min-height:310px;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    margin-bottom:20px;
+
+    background:
+
+        linear-gradient(
+            rgba(0,255,190,.035) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(0,255,190,.035) 1px,
+            transparent 1px
+        ),
+
+        #061712;
+
+    background-size:25px 25px;
+
+    border:
+        1px solid
+        rgba(70,255,194,.25);
+
+    box-shadow:
+        inset 0 0 80px rgba(0,255,170,.05);
+}
+
+.lcd-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#65dcb1;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:10px;
+
+    letter-spacing:2px;
+}
+
+.lcd-main{
+
+    height:230px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+}
+
+.lcd-icon{
+
+    font-size:50px;
+
+    color:var(--green);
+
+    text-shadow:
+        0 0 30px var(--green);
+
+    animation:
+        heartBeat 1.3s infinite;
+}
+
+@keyframes heartBeat{
+
+    50%{
+        transform:scale(1.13);
+    }
+}
+
+.lcd-status{
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:44px;
+
+    color:var(--green);
+
+    letter-spacing:7px;
+
+    margin-top:12px;
+
+    text-shadow:
+        0 0 25px rgba(69,255,179,.6);
+}
+
+.lcd-description{
+
+    color:#71978a;
+
+    max-width:600px;
+
+    font-size:11px;
+
+    margin-top:12px;
+
+    line-height:1.6;
+}
+
+
+/* =========================
+   GRAPH
+========================= */
+
+.graph-card{
+
+    margin-bottom:20px;
+}
+
+.card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.card-header h3{
+
+    font-size:14px;
+
+    letter-spacing:1px;
+}
+
+.card-header span{
+
+    color:var(--muted);
+
+    font-size:10px;
+}
+
+canvas{
+
+    width:100%;
+
+    height:300px;
+
+    display:block;
+}
+
+
+/* =========================
+   ANALYSIS
+========================= */
+
+.analysis-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:20px;
+}
+
+.analysis-item{
+
+    padding:18px;
+
+    background:#071820;
+
+    border-radius:15px;
+
+    margin-bottom:10px;
+
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.analysis-item strong{
+
+    display:block;
+
+    margin-bottom:6px;
+}
+
+.analysis-item span{
+
+    color:#77939e;
+
+    font-size:11px;
+
+    line-height:1.6;
+}
+
+.health-score{
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:65px;
+
+    color:var(--green);
+
+    text-align:center;
+
+    padding:30px;
+}
+
+.score-note{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:11px;
+}
+
+
+/* =========================
+   MEAL PLAN
+========================= */
+
+.meal-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+.meal{
+
+    padding:20px;
+
+    border-radius:18px;
+
+    background:#071820;
+
+    border:1px solid var(--border);
+}
+
+.meal h4{
+
+    color:var(--green);
+
+    margin-bottom:10px;
+}
+
+.meal p{
+
+    color:#8ba4ae;
+
+    font-size:11px;
+
+    line-height:1.7;
+}
+
+.meal-time{
+
+    color:var(--cyan);
+
+    font-size:10px;
+
+    letter-spacing:1px;
+
+    margin-bottom:8px;
+}
+
+.meal-intro{
+
+    color:#77929d;
+
+    font-size:12px;
+
+    margin-bottom:20px;
+
+    line-height:1.6;
+}
+
+
+/* =========================
+   RECORDS
+========================= */
+
+.table-wrapper{
+
+    overflow-x:auto;
+}
+
+.record-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+.record-table th{
+
+    color:#698590;
+
+    font-size:10px;
+
+    text-align:left;
+
+    padding:14px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+}
+
+.record-table td{
+
+    padding:15px;
+
+    font-size:11px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.04);
+
+    color:#b4c9d0;
+}
+
+.record-table tr:hover{
+
+    background:#081b24;
+}
+
+
+/* =========================
+   PAYMENT
+========================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(0,0,0,.75);
+
+    backdrop-filter:blur(8px);
+
+    z-index:1000;
+
+    padding:20px;
+}
+
+.modal-box{
+
+    width:min(500px,100%);
+
+    background:#071820;
+
+    border:1px solid var(--border);
+
+    border-radius:24px;
+
+    padding:30px;
+}
+
+.modal-box h3{
+
+    margin-bottom:20px;
+}
+
+.payment-description{
+
+    color:#78949f;
+
+    font-size:12px;
+
+    line-height:1.7;
+}
+
+.account-box{
+
+    background:#06131b;
+
+    border:1px dashed rgba(0,220,255,.3);
+
+    border-radius:15px;
+
+    padding:18px;
+
+    margin:20px 0;
+}
+
+.account-label{
+
+    color:#67848f;
+
+    font-size:9px;
+
+    letter-spacing:2px;
+}
+
+.account-number{
+
+    color:var(--cyan);
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size:20px;
+
+    margin-top:8px;
+
+    letter-spacing:2px;
+
+    word-break:break-all;
+}
+
+.payment-status{
+
+    padding:13px;
+
+    border-radius:12px;
+
+    margin-top:15px;
+
+    display:none;
+
+}
+
+.reset-button{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    background:#09151d;
+
+    color:#8ca5af;
+
+    cursor:pointer;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+
+    text-align:center;
+
+    color:#425862;
+
+    font-size:9px;
+
+    letter-spacing:1px;
+
+    margin-top:20px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+    .grid-4{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .navigation{
+
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .meal-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:700px){
+
+    .container{
+
+        width:94%;
+    }
+
+    .header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:15px;
+    }
+
+    .user-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .navigation{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .grid-4{
+
+        grid-template-columns:1fr;
+    }
+
+    .analysis-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .meal-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .lcd-status{
+
+        font-size:30px;
+    }
+
+}
+
+@media(max-width:450px){
+
+    .login-box{
+
+        padding:25px;
+    }
+
+    .brand h2{
+
+        font-size:17px;
+    }
+
+    .navigation{
+
+        grid-template-columns:1fr;
+    }
+
+}

@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EVAN | Health Intelligence</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =========================
+     LOGIN PAGE
+========================= -->
+
+<div id="loginPage">
+
+    <div class="login-box">
+
+        <div class="login-logo">♥</div>
+
+        <h1>VITALIS</h1>
+
+        <p class="subtitle">
+            HEALTH INTELLIGENCE PLATFORM
+        </p>
+
+        <div class="form-group">
+
+            <label>FULL NAME</label>
+
+            <input
+                id="loginName"
+                type="text"
+                placeholder="Enter your full name"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>DATE OF BIRTH</label>
+
+            <input
+                id="loginDOB"
+                type="date"
+            >
+
+        </div>
+
+        <button
+            class="primary-button"
+            onclick="signIn()"
+        >
+            SIGN IN
+        </button>
+
+        <p class="login-note">
+            Your information is stored locally in this prototype.
+            A production health system should use secure
+            authentication and encrypted storage.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN DASHBOARD
+========================= -->
+
+<div id="dashboard">
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+                    ✚
+                </div>
+
+                <div>
+
+                    <h2>VITALIS</h2>
+
+                    <p>
+                        ADVANCED HEALTH INTELLIGENCE
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="header-actions">
+
+                <button
+                    class="icon-button"
+                    onclick="openPayment()"
+                >
+                    PAYMENT
+                </button>
+
+                <button
+                    class="icon-button"
+                    onclick="logout()"
+                >
+                    SIGN OUT
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- USER INFORMATION -->
+
+        <div class="user-card">
+
+            <div class="user-info">
+
+                <div
+                    class="avatar"
+                    id="avatar"
+                >
+                    V
+                </div>
+
+                <div>
+
+                    <div
+                        class="user-name"
+                        id="displayName"
+                    >
+                        User
+                    </div>
+
+                    <div
+                        class="user-dob"
+                        id="displayDOB"
+                    >
+                        DATE OF BIRTH
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="health-state">
+                ● HEALTH PROFILE ACTIVE
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="navigation">
+
+            <button
+                class="nav-button active"
+                onclick="showSection('overview', this)"
+            >
+                OVERVIEW
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="showSection('vitals', this)"
+            >
+                VITALS
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="showSection('analysis', this)"
+            >
+                HEALTH AI
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="showSection('meals', this)"
+            >
+                MEAL PLAN
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="showSection('records', this)"
+            >
+                RECORDS
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="openPayment()"
+            >
+                PREMIUM
+            </button>
+
+        </nav>
+
+
+        <!-- =========================
+             OVERVIEW
+        ========================= -->
+
+        <section
+            id="overview"
+            class="section active"
+        >
+
+            <!-- LCD -->
+
+            <div class="lcd">
+
+                <div class="lcd-top">
+
+                    <span>
+                        VITALIS // HEALTH LCD
+                    </span>
+
+                    <span id="clock">
+                        --:--:--
+                    </span>
+
+                </div>
+
+                <div class="lcd-main">
+
+                    <div class="lcd-icon">
+                        ♥
+                    </div>
+
+                    <div
+                        class="lcd-status"
+                        id="lcdStatus"
+                    >
+                        READY
+                    </div>
+
+                    <div
+                        class="lcd-description"
+                        id="lcdDescription"
+                    >
+                        Complete your health check to generate
+                        your current dashboard status.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- VITAL CARDS -->
+
+            <div class="grid-4">
+
+                <div class="card">
+
+                    <div class="card-label">
+                        PULSE
+                    </div>
+
+                    <div class="card-value">
+
+                        <span id="pulseValue">
+                            --
+                        </span>
+
+                        <span class="card-unit">
+                            BPM
+                        </span>
+
+                    </div>
+
+                    <div class="card-status">
+                        HEART ACTIVITY
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-label">
+                        BLOOD PRESSURE
+                    </div>
+
+                    <div class="card-value">
+
+                        <span id="bpValue">
+                            --
+                        </span>
+
+                    </div>
+
+                    <div class="card-status">
+                        CARDIOVASCULAR
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-label">
+                        OXYGEN
+                    </div>
+
+                    <div class="card-value">
+
+                        <span id="oxygenValue">
+                            --
+                        </span>
+
+                        <span class="card-unit">
+                            %
+                        </span>
+
+                    </div>
+
+                    <div class="card-status">
+                        OXYGEN SATURATION
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-label">
+                        TEMPERATURE
+                    </div>
+
+                    <div class="card-value">
+
+                        <span id="tempValue">
+                            --
+                        </span>
+
+                        <span class="card-unit">
+                            °C
+                        </span>
+
+                    </div>
+
+                    <div class="card-status">
+                        BODY TEMPERATURE
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEEKLY GRAPH -->
+
+            <div class="card graph-card">
+
+                <div class="card-header">
+
+                    <h3>
+                        WEEKLY HEALTH RECORD
+                    </h3>
+
+                    <span>
+                        LAST 7 RECORDS
+                    </span>
+
+                </div>
+
+                <canvas id="healthGraph"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             VITALS
+        ========================= -->
+
+        <section
+            id="vitals"
+            class="section"
+        >
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>
+                        HEALTH MEASUREMENTS
+                    </h3>
+
+                    <span>
+                        ENTER MEASUREMENTS
+                    </span>
+
+                </div>
+
+
+                <div class="grid-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            PULSE / HEART RATE
+                        </label>
+
+                        <input
+                            id="inputPulse"
+                            type="number"
+                            placeholder="72"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            BLOOD PRESSURE
+                        </label>
+
+                        <input
+                            id="inputBP"
+                            type="text"
+                            placeholder="120/80"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            OXYGEN SATURATION
+                        </label>
+
+                        <input
+                            id="inputOxygen"
+                            type="number"
+                            placeholder="98"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            TEMPERATURE
+                        </label>
+
+                        <input
+                            id="inputTemp"
+                            type="number"
+                            step="0.1"
+                            placeholder="36.7"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        CURRENT SYMPTOMS
+                    </label>
+
+                    <textarea
+                        id="inputSymptoms"
+                        placeholder="Describe any symptoms..."
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    class="primary-button"
+                    onclick="runHealthCheck()"
+                >
+                    ANALYZE HEALTH STATUS
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             HEALTH AI
+        ========================= -->
+
+        <section
+            id="analysis"
+            class="section"
+        >
+
+            <div class="analysis-grid">
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            HEALTH ANALYSIS
+                        </h3>
+
+                        <span>
+                            SCREENING
+                        </span>
+
+                    </div>
+
+
+                    <div class="analysis-item">
+
+                        <strong>
+                            Cardiovascular
+                        </strong>
+
+                        <span id="cardioAnalysis">
+                            Awaiting health data.
+                        </span>
+
+                    </div>
+
+
+                    <div class="analysis-item">
+
+                        <strong>
+                            Oxygen
+                        </strong>
+
+                        <span id="oxygenAnalysis">
+                            Awaiting health data.
+                        </span>
+
+                    </div>
+
+
+                    <div class="analysis-item">
+
+                        <strong>
+                            Temperature
+                        </strong>
+
+                        <span id="tempAnalysis">
+                            Awaiting health data.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            HEALTH SCORE
+                        </h3>
+
+                        <span>
+                            DEMO SCORE
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="healthScore"
+                        class="health-score"
+                    >
+                        --
+                    </div>
+
+
+                    <div class="score-note">
+
+                        This is a prototype screening
+                        indicator, not a medical diagnosis.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MEAL PLAN
+        ========================= -->
+
+        <section
+            id="meals"
+            class="section"
+        >
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>
+                        PERSONAL HEALTH MEAL PLAN
+                    </h3>
+
+                    <span>
+                        HEALTH-BASED SUGGESTION
+                    </span>
+
+                </div>
+
+
+                <p
+                    id="mealIntro"
+                    class="meal-intro"
+                >
+                    Complete a health check first to generate
+                    your meal-planning suggestion.
+                </p>
+
+
+                <div
+                    class="meal-grid"
+                    id="mealGrid"
+                >
+
+                    <div class="meal">
+
+                        <div class="meal-time">
+                            07:00 — BREAKFAST
+                        </div>
+
+                        <h4>
+                            Balanced Start
+                        </h4>
+
+                        <p>
+                            Whole grains, fruit and a protein
+                            source with water.
+                        </p>
+
+                    </div>
+
+
+                    <div class="meal">
+
+                        <div class="meal-time">
+                            13:00 — LUNCH
+                        </div>
+
+                        <h4>
+                            Balanced Plate
+                        </h4>
+
+                        <p>
+                            Vegetables, carbohydrates and
+                            a protein source.
+                        </p>
+
+                    </div>
+
+
+                    <div class="meal">
+
+                        <div class="meal-time">
+                            19:00 — DINNER
+                        </div>
+
+                        <h4>
+                            Light Dinner
+                        </h4>
+
+                        <p>
+                            Vegetables, protein and a moderate
+                            carbohydrate portion.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RECORDS
+        ========================= -->
+
+        <section
+            id="records"
+            class="section"
+        >
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>
+                        HEALTH RECORD DATABASE
+                    </h3>
+
+                    <span id="recordCount">
+                        0 RECORDS
+                    </span>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="record-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>DATE</th>
+
+                                <th>PULSE</th>
+
+                                <th>BP</th>
+
+                                <th>OXYGEN</th>
+
+                                <th>TEMP</th>
+
+                                <th>STATUS</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="recordTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="footer">
+
+            VITALIS HEALTH INTELLIGENCE •
+            PROTOTYPE SYSTEM •
+            NOT A MEDICAL DIAGNOSIS
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     PAYMENT MODAL
+========================= -->
+
+<div
+    id="paymentModal"
+    class="modal"
+>
+
+    <div class="modal-box">
+
+        <h3>
+            VITALIS PREMIUM ACCESS
+        </h3>
+
+        <p class="payment-description">
+
+            Premium features can be placed behind
+            a legitimate payment system.
+
+            This prototype demonstrates the
+            payment-gate interface only.
+
+        </p>
+
+
+        <div class="account-box">
+
+            <div class="account-label">
+                PAYMENT ACCOUNT
+            </div>
+
+            <div
+                class="account-number"
+                id="paymentAccount"
+            >
+                YOUR ACCOUNT NUMBER
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                AMOUNT
+            </label>
+
+            <input
+                id="paymentAmount"
+                type="number"
+                placeholder="Enter amount"
+            >
+
+        </div>
+
+
+        <button
+            class="primary-button"
+            onclick="simulatePayment()"
+        >
+            VERIFY PAYMENT
+        </button>
+
+
+        <div
+            id="paymentStatus"
+            class="payment-status"
+        ></div>
+
+
+        <button
+            class="reset-button"
+            onclick="closePayment()"
+        >
+            CLOSE
+        </button>
